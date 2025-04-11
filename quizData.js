@@ -3050,3 +3050,95 @@ const quizData = [
     "correctAnswer": 0
   }
 ];
+
+
+  
+  
+
+ 
+
+const replacementOptions = [
+  "Executes script with new runtime", "requirements file for uv", "Prettier code formatter",
+  "Inspect network traffic", "Avoid tracking files in git", "JavaScript Object Notation",
+  "List all files in directory", "Concatenate file contents", "Current git status",
+  "CSS styles HTML", "Create local copy of repo", "Terminal window", "Start git project",
+  "Exchange data", "Launch commands quickly", "ASGI server", "View git commits",
+  "Shows present directory", "Configuration file", "Style selector",
+  "Create directory", "List files in folder", "Run local scripts",
+  "Local settings", "Print message", "Check user git settings", "Make new file", 
+  "Install package", "Show active branch", "Shell script extension", "Version control system", 
+  "Open settings UI", "Editor config file", "Update from repo", "Stage all changes",
+  "View command help", "Go up a directory", "Notebook language", "Open terminal",
+  "Run python code", "List Python packages", "Install dependencies", 
+  "Commit message", "Upgrade library", "Write formatted docs", "Delete a file",
+  "Display working dir", "List pip packages", "Entry script", "Find code issues",
+  "Handle JSON", "Markdown extension", "Static web host", "Image compression format",
+  "Image compression lib", "Vector graphic format", "Run FastAPI locally",
+  "CI/CD service", "GitHub repo creation", "Compress to WebP", 
+  "Access Google Drive", "Docker image file", "Python serverless platform",
+  "Ignore files for Docker", "Automate GitHub tasks", "Job file syntax", 
+  "Running container info", "Docker build file", "JPEG file format",
+  "Deployment dependencies", "Deploy GitHub content", "Notebook cloud runner",
+  "Deploy to Vercel", "GitHub workflow config", "Small image format",
+  "Tunnel localhost", "Define GET endpoint", "Build Docker image",
+  "Copy files to container", "Python metadata file", "Default Uvicorn port",
+  "Run in background", "Formatted text docs", "Run default command",
+  "Lossless screenshot format", "Streamline deployments", "Stop container",
+  "Project readme", "Expose Docker port", "API doc preview", 
+  "WebP quality setting", "Vercel config extension", "Main Docker command",
+  "GitHub steps syntax", "Install pip in Colab", "Run local LLM",
+  "Define container image", "Mount folders in Docker", "Host static files",
+  "Default runner OS", "Set MkDocs base URL"
+];
+
+// Utility function to get N random elements from array
+function getRandomItems(arr, n) {
+  const shuffled = arr.slice().sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, n);
+}
+
+// Replace Option B, C, D
+quizData.forEach(q => {
+  const opts = q.options;
+  if (opts[1] === "Option B" && opts[2] === "Option C" && opts[3] === "Option D") {
+    const [b, c, d] = getRandomItems(replacementOptions, 3);
+    q.options[1] = b;
+    q.options[2] = c;
+    q.options[3] = d;
+  }
+  else if (opts[0] === "Option B" && opts[1] === "Option C" && opts[2] === "Option D") {
+    const [b, c, d] = getRandomItems(replacementOptions, 3);
+    q.options[0] = b;
+    q.options[1] = c;
+    q.options[2] = d;
+  }
+  else if (opts[0] === "Option B" && opts[1] === "Option C" && opts[3] === "Option D") {
+    const [b, c, d] = getRandomItems(replacementOptions, 3);
+    q.options[0] = b;
+    q.options[1] = c;
+    q.options[3] = d;
+  }
+  else if (opts[0] === "Option B" && opts[2] === "Option C" && opts[3] === "Option D") {
+    const [b, c, d] = getRandomItems(replacementOptions, 3);
+    q.options[0] = b;
+    q.options[2] = c;
+    q.options[3] = d;
+  }
+});
+quizData.forEach((q) => {
+  if (q.options) {
+    const correctOption = q.options[q.correctAnswer];
+
+    // Shuffle options array
+    for (let i = q.options.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [q.options[i], q.options[j]] = [q.options[j], q.options[i]];
+    }
+
+    // Update correctAnswer index after shuffling
+    q.correctAnswer = q.options.indexOf(correctOption);
+  }
+});
+
+
+  
