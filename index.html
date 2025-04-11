@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quiz from PDF</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .options {
+      list-style-type: none;
+      padding: 0;
+    }
+    .options li {
+      margin: 10px 0;
+      cursor: pointer;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .options li:hover {
+      background-color: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+
+<div id="quizContainer"></div>
+
+<!-- Load the quiz data -->
+<script src="quizData.js"></script>
+
+<!-- Display logic -->
+<script>
+  function displayQuiz() {
+    const quizContainer = document.getElementById('quizContainer');
+    quizData.forEach((item, index) => {
+      const questionDiv = document.createElement('div');
+      questionDiv.className = 'question';
+      questionDiv.innerHTML = `<h3>Question ${index + 1}: ${item.question}</h3>`;
+
+      const optionsList = document.createElement('ul');
+      optionsList.className = 'options';
+      item.options.forEach((option, optionIndex) => {
+        const li = document.createElement('li');
+        li.textContent = option;
+        li.onclick = function () {
+          checkAnswer(index, optionIndex);
+        };
+        optionsList.appendChild(li);
+      });
+
+      questionDiv.appendChild(optionsList);
+      quizContainer.appendChild(questionDiv);
+    });
+  }
+
+  function checkAnswer(questionIndex, selectedOptionIndex) {
+    const correctAnswerIndex = quizData[questionIndex].correctAnswer;
+    if (selectedOptionIndex === correctAnswerIndex) {
+      alert('✅ Correct!');
+    } else {
+      alert(`❌ Incorrect. The correct answer was: ${quizData[questionIndex].options[correctAnswerIndex]}`);
+    }
+  }
+
+  window.onload = displayQuiz;
+</script>
+
+</body>
+</html>
