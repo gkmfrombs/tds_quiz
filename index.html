@@ -1,78 +1,106 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Quiz from PDF</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    .question {
-      margin-bottom: 20px;
-    }
-    .options {
-      list-style-type: none;
-      padding: 0;
-    }
-    .options li {
-      margin: 10px 0;
-      cursor: pointer;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    .options li:hover {
-      background-color: #f0f0f0;
-    }
-  </style>
-</head>
-<body>
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<div id="quizContainer"></div>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-<!-- Load the quiz data -->
-<script src="quizData.js"></script>
+    <title>Quiz from PDF</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .question {
+        margin-bottom: 20px;
+      }
+      .options {
+        list-style-type: none;
+        padding: 0;
+      }
+      .options li {
+        margin: 10px 0;
+        cursor: pointer;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      .options li:hover {
+        background-color: #f0f0f0;
+      }
+      .correct {
+        background-color: lightgreen !important;
+      }
+      .incorrect {
+        background-color: lightcoral !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="quizContainer"></div>
 
-<!-- Display logic -->
-<script>
-  function displayQuiz() {
-    const quizContainer = document.getElementById('quizContainer');
-    quizData.forEach((item, index) => {
-      const questionDiv = document.createElement('div');
-      questionDiv.className = 'question';
-      questionDiv.innerHTML = `<h3>Question ${index + 1}: ${item.question}</h3>`;
+    <!-- Load the quiz data -->
+    <script src="quizData.js"></script>
 
-      const optionsList = document.createElement('ul');
-      optionsList.className = 'options';
-      item.options.forEach((option, optionIndex) => {
-        const li = document.createElement('li');
-        li.textContent = option;
-        li.onclick = function () {
-          checkAnswer(index, optionIndex);
-        };
-        optionsList.appendChild(li);
-      });
+    <!-- Display logic -->
+    <script>
+      function displayQuiz() {
+        const quizContainer = document.getElementById('quizContainer');
+        quizData.forEach((item, index) => {
+          const questionDiv = document.createElement('div');
+          questionDiv.className = 'question';
+          questionDiv.innerHTML = `<h3>Question ${index + 1}: ${item.question}</h3>`;
 
-      questionDiv.appendChild(optionsList);
-      quizContainer.appendChild(questionDiv);
-    });
-  }
+          const optionsList = document.createElement('ul');
+          optionsList.className = 'options';
+          item.options.forEach((option, optionIndex) => {
+            const li = document.createElement('li');
+            li.textContent = option;
+            li.onclick = function () {
+              checkAnswer(index, optionIndex);
+            };
+            optionsList.appendChild(li);
+          });
 
-  function checkAnswer(questionIndex, selectedOptionIndex) {
-    const correctAnswerIndex = quizData[questionIndex].correctAnswer;
-    if (selectedOptionIndex === correctAnswerIndex) {
-      alert('✅ Correct!');
-    } else {
-      alert(`❌ Incorrect. The correct answer was: ${quizData[questionIndex].options[correctAnswerIndex]}`);
-    }
-  }
+          questionDiv.appendChild(optionsList);
+          quizContainer.appendChild(questionDiv);
+        });
+      }
 
-  window.onload = displayQuiz;
-</script>
+      function checkAnswer(questionIndex, selectedOptionIndex) {
+        const questionDiv = document.getElementsByClassName('question')[questionIndex];
+        const options = questionDiv.getElementsByTagName('li');
+        const correctAnswerIndex = quizData[questionIndex].correctAnswer;
 
-</body>
+        // Disable all options after selection
+        for (let i = 0; i < options.length; i++) {
+          options[i].onclick = null;
+          options[i].style.pointerEvents = 'none';
+        }
+
+        // Mark correct and incorrect answers
+        options[correctAnswerIndex].classList.add('correct');
+        if (selectedOptionIndex !== correctAnswerIndex) {
+          options[selectedOptionIndex].classList.add('incorrect');
+        }
+
+        // Optional: keep alert logic intact
+        if (selectedOptionIndex === correctAnswerIndex) {
+          alert('✅ Correct!');
+        } else {
+          alert(`❌ Incorrect. The correct answer was: ${quizData[questionIndex].options[correctAnswerIndex]}`);
+        }
+      }
+
+      window.onload = displayQuiz;
+    </script>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  </body>
 </html>
